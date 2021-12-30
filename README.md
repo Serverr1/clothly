@@ -1,4 +1,12 @@
-# Install
+# CLOTHLY marketplace
+
+```
+Clothly is a blockchain marketplace where people can buy and sell clothes with cUSD and Other
+currency(coming soon). The main function is to allow the change, transfer or share of ownership
+on a particular product(cloth). Live demo [HERE](https://www.google.com).
+
+```
+## Install
 
 ```
 
@@ -14,7 +22,7 @@ yarn install
 
 ```
 
-# Start
+## Start
 
 ```
 
@@ -22,14 +30,14 @@ npm run dev
 
 ```
 
-# Build
+## Build
 
 ```
 
 npm run build
 
 ```
-# Usage
+## Usage
 1. Install the [CeloExtensionWallet](https://chrome.google.com/webstore/detail/celoextensionwallet/kkilomkmpmkbdnfelcpgckmpcaemjcdh?hl=en) from the google chrome store.
 2. Create a wallet.
 3. Go to [https://celo.org/developers/faucet](https://celo.org/developers/faucet) and get tokens for the alfajores testnet.
