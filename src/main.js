@@ -7,7 +7,7 @@ import erc20Abi from '../contract/erc20.abi.json'
 
 // setting global var, let, const
 const ERC20_DECIMALS = 18
-const ClothyContractAddress = "0x35DCCA4B67d6437466aB2A020Ac001C07023fcab" // clothly contact address
+const ClothyContractAddress = "0x697b35aA8c63CC9Cc0c586F914b2b0dC1a3A1Fce" // clothly contact address
 const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1" // cUSD contract address
 
 let kit // the kit
@@ -172,7 +172,6 @@ window.addEventListener("load", async () => {
     if (cart.length <= 0) {
         document.getElementById("emptyCart").textContent = "Cart is empty!"
     }
-    clearClothes()
 })
 
 // sell new cloth
@@ -372,14 +371,4 @@ function cartTemplate(_cloth) {
         </p>
     </div>
 `
-}
-
-
-
-
-
-// (DANGER ZONE !!!) clear clothes list
-function clearClothes() {
-    clothes = []
-    clothes.length = 0
 }
