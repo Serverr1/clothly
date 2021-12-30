@@ -4,7 +4,9 @@ Clothly is a blockchain marketplace where people can buy and sell clothes with c
 currency(coming soon). The main function is to allow the change, transfer or share of ownership
 on a particular product(cloth). Live demo [HERE](https://www.google.com).
 
-##
+
+## ScreenShot
+![clothly screenshot](https://raw.githubusercontent.com/IbukunoluwaNap/clothly/main/public/images/clothly-image.png)
 
 
 ## Install
