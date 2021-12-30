@@ -172,6 +172,7 @@ window.addEventListener("load", async () => {
     if (cart.length <= 0) {
         document.getElementById("emptyCart").textContent = "Cart is empty!"
     }
+    clearClothes()
 })
 
 // sell new cloth
@@ -371,4 +372,14 @@ function cartTemplate(_cloth) {
         </p>
     </div>
 `
+}
+
+
+
+
+
+// (DANGER ZONE !!!) clear clothes list
+function clearClothes() {
+    clothes = []
+    clothes.length = 0
 }
