@@ -327,9 +327,11 @@ document.querySelector("#buyCart").addEventListener("click", async (e) => {
                 // clear cart and update app
                 document.getElementById("totalSum").textContent = 0
                 document.getElementById("balance").textContent = 0
+                document.querySelector("#cartTotal").textContent = 0
                 cart = []
                 cart.length = 0
-                await contract.methods.clearCartAddress()
+                await contract.methods.clearCartAddress() // clear contract addresses
+                cartTotal = 1 // reset cart total to 1
                 document.getElementById("emptyCart").textContent = "Transaction completed, cart is empty!"
                 renderCart()
                 getClothes()
