@@ -1,11 +1,9 @@
 # CLOTHLY marketplace
 
-```
 Clothly is a blockchain marketplace where people can buy and sell clothes with cUSD and Other
 currency(coming soon). The main function is to allow the change, transfer or share of ownership
 on a particular product(cloth). Live demo [HERE](https://www.google.com).
 
-```
 ## Install
 
 ```
