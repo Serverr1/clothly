@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#7952b3">
+    <meta name="description" content="A blockchain online cloth marketplace">
+    <meta name="author" content="Ibukunoluwa Naphtali, and Github contributors">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="" sizes="180x180">
+    <link rel="icon" href="" sizes="32x32" type="image/png">
+    <link rel="icon" href="" sizes="16x16" type="image/png">
+    <link rel="mask-icon" href="" color="#7952b3">
+    <link rel="icon" href="">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css">
+    <!-- Title -->
+    <title>Clothly Marketplace</title>
+    <!-- Style -->
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            font-family: 'Italiana', serif;
+        }
+
+        img {
+            pointer-events: none;
+        }
+
+        .notification {
+            position: fixed;
+            right: 1rem;
+            bottom: .5rem;
+            z-index: 99999;
+        }
+
+        .cus-navbar {
+            min-height: 80px;
+        }
+
+        .transparent {
+            background-color: transparent;
+        }
+
+        .p {
+            color: #805d49 !important;
+        }
+
+        .s {
+            color: #bcbdbf !important;
+        }
+
+        .bgp {
+            background-color: #805d49 !important;
+        }
+
+        .bgs {
+            background-color: #bcbdbf !important;
+        }
+
+        .blur {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: saturate(180%) blur(20px);
+        }
+
+        #hero {
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+        }
+
+        .nav-top-padding {
+            padding-top: 4.5rem;
+        }
+
+        .cus-rounded {
+            border-radius: 1rem;
+        }
+
+        .border-rounded {
+            background-color: transparent;
+            border: 3px solid #805d49;
+            border-radius: 1rem;
+            position: absolute;
+        }
+
+        .fit-image {
+            object-fit: cover;
+        }
+
+        .btn {
+            outline: none !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+
+        .navbar-dark .navbar-toggler {
+            color: transparent !important;
+            border-color: transparent !important;
+        }
+
+        .navbar-toggler:focus {
+            text-decoration: none;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        .nav-link {
+            color: #fff !important;
+        }
+
+        .circles {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            bottom: 1%;
+            right: 0;
+            left: 0;
+        }
+
+        .circle1 {
+            margin: auto 0;
+            width: 10px;
+            height: 10px;
+            background-color: transparent;
+            border: 3px solid #805d49;
+            border-radius: 50%;
+        }
+
+        .circle2 {
+            margin: auto .5%;
+            width: 5px;
+            height: 5px;
+            background-color: #805d49;
+            border-radius: 50%;
+        }
+
+        .circle3 {
+            margin: auto .5%;
+            width: 20px;
+            height: 20px;
+            background-color: #805d49;
+            border-radius: 50%;
+        }
+
+        .circle4 {
+            margin: auto .5%;
+            width: 10px;
+            height: 10px;
+            background-color: #805d49;
+            border-radius: 50%;
+        }
+
+        .cus-container {
+            padding-top: 100px;
+            padding-bottom: 100px;
+        }
+
+        .cus-card {
+            height: 500px !important;
+            border-radius: 1rem;
+            border: none !important;
+        }
+
+        .cus-card-body {
+            position: absolute;
+            bottom: 0;
+            width: 80%;
+            border-radius: 0 1rem 0 1rem;
+        }
+
+        .price {
+            position: absolute;
+            border-radius: 0 0 .5rem .5rem;
+            padding: .5rem;
+            left: 2rem;
+            color: #805d49;
+            background-color: #fff;
+        }
+
+        .collection,
+        .collection>a {
+            position: absolute;
+            border-radius: .5rem 0 0 .5rem;
+            padding: .3rem 1rem .3rem .3rem;
+            right: .35rem;
+            color: #805d49;
+            background-color: #fff;
+            text-decoration: none;
+        }
+
+        .cus-form-control {
+            height: 3.5rem;
+            border-radius: .5rem;
+            border: none !important;
+        }
+
+        .form-control:focus {
+            color: #fff;
+            background-color: transparent;
+            border-color: transparent !important;
+            outline: 0;
+            box-shadow: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top transparent cus-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Clothly</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#buyclothes">Buy Cloth</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#sellclothes">Sell Cloth</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#buyCollection">Collections</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <i class="nav-link">
+                            <span id="balance"></span> cUSD
+                        </i>
+                    </li>
+                    <li class="nav-item">
+                        <a type="button" class="nav-link btn btn-lg bgp s" href="#cart" data-bs-toggle="modal"
+                            data-bs-target="#checkoutModal">Cart <span id="cartTotal" class="text-warning"></span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="modal fade" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content cus-rounded" style="border: none !important;">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="checkoutModalLabel">Checkout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="cart">
+
+                    </div>
+                    <span id="emptyCart" class="fw-bold h3 text-center"></span>
+                    <div class="modal-footer">
+                        <h5 class="mr-2"><b>Total</b> <span id="totalSum">0</span> cUSD</h5>
+                        <a id="buyCart" class="buy-cart btn btn-lg bgp text-white">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- notification -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-3 alert notification cus-rounded bgp mt-2 text-center" role="alert">
+                <span id="notification" class="fw-bold text-white">Getting ready...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <div id="hero"
+        style="background-image:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://raw.githubusercontent.com/IbukunoluwaNap/clothly/main/images/hero.jpg');">
+        <div class="container nav-top-padding">
+            <div class="row">
+                <div class="col-sm-6 position-relative">
+                    <div class="border-rounded" style="height: 80%; width: 50%; top: 30%; left: -30%;"></div>
+                    <img src="https://raw.githubusercontent.com/IbukunoluwaNap/clothly/main/images/img2.jpg" alt="image"
+                        width="60%" class="fit-image shadow-lg cus-rounded">
+                    <div class="border-rounded" style="height: 80%; width: 50%; top: 10%; left: 45%;"></div>
+                    <img src="https://raw.githubusercontent.com/IbukunoluwaNap/clothly/main/images/img1.jpg" alt="image"
+                        width="50%" class="fit-image position-absolute shadow-lg cus-rounded"
+                        style="left: 40%; top: 20%;">
+                    <img src="https://raw.githubusercontent.com/IbukunoluwaNap/clothly/main/images/img3.jpg" alt="image"
+                        width="40%" class="fit-image position-absolute shadow-lg cus-rounded"
+                        style="left: 30%; top: 50%;">
+                </div>
+                <div class="col-sm-6 p-2 position-relative text-white text-center align-middle" style="margin: auto 0;">
+                    <h1 class="display-1 mt-5"><b>CLOTHLY.<span class="p">marketplace</span></b></h1>
+                    <p>A blockchain online cloth marketplace!!!</p>
+                    <a href="#sellclothes" class="btn btn-lg bgp text-white">Create Product</a>
+                </div>
+                <div class="circles position-absolute">
+                    <div class="circle1"></div>
+                    <div class="circle2"></div>
+                    <div class="circle3"></div>
+                    <div class="circle4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clothes -->
+    <section id="buyclothes" class="overflow-hidden">
+        <div class="container cus-container position-relative">
+            <div id="clothes" class="row">
+                <div class="border-rounded" style="height: 80%; width: 80%; top: 30%; left: -30%;"></div>
+                <div class="border-rounded" style="height: 80%; width: 50%; top: 10%; right: -30%;"></div>
+                <div class="col-12">
+                    <h1 class="display-3">Clothes</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sell Clothes -->
+    <section id="sellclothes" class="overflow-hidden bgs">
+        <div class="container cus-container position-relative">
+            <div class="row justify-content-center">
+                <div class="circle1 position-absolute" style="height: 80%; width: 80%; top: 30%; left: -30%;"></div>
+                <div class="circle3 position-absolute" style="height: 80%; width: 50%; top: 10%; right: -30%;"></div>
+                <div class="col-12">
+                    <h1 class="display-3">Sell Clothes</h1>
+                </div>
+                <form class="col-sm-6 p-5 pb-0 card cus-card blur" style="height: auto !important;">
+                    <div class="mb-3">
+                        <input id="clothImage" type="text" class="form-control cus-form-control" required
+                            placeholder="Image link">
+                    </div>
+                    <div class="mb-3">
+                        <input id="clothName" type="text" class="form-control cus-form-control" required
+                            placeholder="Product name">
+                    </div>
+                    <div class="mb-3">
+                        <input id="clothPrice" type="number" class="form-control cus-form-control" required
+                            placeholder="Product price">
+                    </div>
+                    <div class="mb-3">
+                        <textarea id="clothDescription" class="form-control cus-form-control" rows="3" required
+                            placeholder="Product description"></textarea>
+                    </div>
+                    <select id="clothCollection" class="form-select form-control text-dark cus-form-control" required
+                        aria-label="Collections">
+                        <option selected>Collections</option>
+                        <option value="Women">Women</option>
+                        <option value="Men">Men</option>
+                        <option value="Kids">Kids</option>
+                        <option value="Babies">Babies</option>
+                        <option value="Trousers">Trousers</option>
+                        <option value="Skirt">Skirts</option>
+                        <option value="Shoes">Shoes</option>
+                        <option value="Winter">Winter</option>
+                        <option value="Summer">Summer</option>
+                    </select>
+                    <div class="mt-4 mb-4">
+                        <button id="addNewCloth" type="button" class="btn btn-lg fw-bold p btn-light">Create
+                            Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <section id="footer" class="overflow-hidden">
+        <div class="container-fluid bgp text-white">
+            <div class="row">
+                <div class="col-sm-8"></div>
+                <div class="col-sm-4">
+                    <a href="https://github.com/IbukunoluwaNap/clothly" class="nav-link" target="_blank"
+                        rel="noopener noreferrer">
+                        <svg height="32" aria-hidden="true" fill="#fff" viewBox="0 0 16 16" version="1.1" width="32"
+                            data-view-component="true" class="octicon octicon-mark-github v-align-middle">
+                            <path fill-rule="evenodd"
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                            </path>
+                        </svg>
+                        By Ibukunoluwa Naphtali, And Contributors
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        var navbar = document.getElementById('navbar');
+        window.onscroll = function () {
+            "use strict";
+            if (document.body.scrollTop >= 80 || document.documentElement.scrollTop >= 80) {
+                navbar.classList.add("blur");
+                navbar.classList.remove("transparent");
+            }
+            else {
+                navbar.classList.add("transparent");
+                navbar.classList.remove("blur");
+            }
+        };
+    </script>
+</body>
+
+</html>
