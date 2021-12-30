@@ -1,20 +1,21 @@
+// imports
 import Web3 from 'web3'
 import { newKitFromWeb3 } from '@celo/contractkit'
 import BigNumber from "bignumber.js"
 import ClothlyAbi from '../contract/clothly.abi.json'
 import erc20Abi from '../contract/erc20.abi.json'
 
-
+// setting global var, let, const
 const ERC20_DECIMALS = 18
-const ClothyContractAddress = "0x35DCCA4B67d6437466aB2A020Ac001C07023fcab"
-const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
+const ClothyContractAddress = "0x35DCCA4B67d6437466aB2A020Ac001C07023fcab" // clothly contact address
+const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1" // cUSD contract address
 
-let kit
-let cart = []
-let cartTotal = 1
-let contract
-let clothes = []
-let cartAddress = []
+let kit // the kit
+let cart = [] // cart object to contain the cart cloth array (array of object)
+let cartTotal = 1 // init cartTotal state
+let contract // the contract
+let clothes = [] // clothes object to contain the clothes cloth array (array of object)
+let cartAddress = [] // cart address object to contain the cart addresses of chained transaction
 
 // connect to celo wallet
 const connectCeloWallet = async function () {
@@ -31,17 +32,21 @@ const connectCeloWallet = async function () {
             const accounts = await kit.web3.eth.getAccounts()
             kit.defaultAccount = accounts[0]
 
+            // setting contract on the web3 using the kit
             contract = new kit.web3.eth.Contract(ClothlyAbi, ClothyContractAddress)
         } catch (error) {
+            // error validation response
             notification(`⚠️ ${error}.`)
         }
     } else {
+        // installation notice
         notification("⚠️ Please install the CeloExtensionWallet.")
     }
 }
 
 // approve traction notification
 async function approve(_price) {
+    // setting the cUSD contract on the web3 using the kit
     const cUSDContract = new kit.web3.eth.Contract(erc20Abi, cUSDContractAddress)
 
     const result = await cUSDContract.methods
@@ -53,6 +58,8 @@ async function approve(_price) {
 // getting total balance in cUSD
 const getBalance = async function () {
     const totalBalance = await kit.getTotalBalance(kit.defaultAccount)
+    // shifting and converting the balance to currency format
+    //  using the "priceToCurrency()" below
     const cUSDBalance = priceToCurrency(totalBalance.cUSD.shiftedBy(-ERC20_DECIMALS))
     document.querySelector("#balance").textContent = cUSDBalance
 }
@@ -161,6 +168,7 @@ window.addEventListener("load", async () => {
     await getClothes()
     renderClothes()
     notificationOff()
+    // empty cart notice
     if (cart.length <= 0) {
         document.getElementById("emptyCart").textContent = "Cart is empty!"
     }
@@ -182,7 +190,7 @@ document
 
         notification(`Adding "${_cloth[0]}"...`)
 
-        const checkIfEmpty = isEmptyObject(_cloth)
+        const checkIfEmpty = isEmptyObject(_cloth) // checking if form is empty on submission
 
         if (checkIfEmpty) {
             notification('"FORM" Can not be empty!!!')
@@ -210,7 +218,7 @@ document.querySelector("#clothes").addEventListener("click", async (e) => {
         const index = e.target.id
         notification("⌛ Waiting for payment approval...")
         try {
-            await approve(clothes[index].price)
+            await approve(clothes[index].price.toString())
         } catch (error) {
             notification(`⚠️ ${error}.`)
         }
@@ -220,6 +228,7 @@ document.querySelector("#clothes").addEventListener("click", async (e) => {
                 .buyCloth(index)
                 .send({ from: kit.defaultAccount })
             notification(`🎉 You successfully bought "${clothes[index].name}".`)
+            console.log(result)
             getClothes()
             getBalance()
         } catch (error) {
@@ -238,31 +247,56 @@ function isEmptyObject(obj) {
 }
 
 
+
+
+
 // CART FUNCTIONALITY
 // Add item
 document.querySelector("#clothes").addEventListener("click", (e) => {
     if (e.target.className.includes("add-to-cart")) {
         const index = e.target.id
         const _cloth = clothes[index]
+        let isInCart = false // is item in cart?
 
-        cart.push({
-            owner: _cloth.owner,
-            image: _cloth.image,
-            name: _cloth.name,
-            price: _cloth.price,
-            description: _cloth.description,
-            collection: _cloth.collection,
-            sold: _cloth.sold,
-            index: _cloth.index,
-        })
-        let oldSum = document.getElementById("totalSum").textContent
-        let newSum = parseFloat(oldSum) + parseFloat(_cloth.price.shiftedBy(-ERC20_DECIMALS).toFixed(2))
-        document.getElementById("totalSum").textContent = newSum
-        notification(`${_cloth.name} has been added to CART!`)
-        document.getElementById("emptyCart").textContent = ""
-        renderCart();
-        // getting cart total items
-        document.querySelector("#cartTotal").textContent = cartTotal++
+        // check if item is already in cart
+        if (cart.length > 0) {
+            cart.forEach(item => {
+                if (item.index === _cloth.index) {
+                    isInCart = true;
+                } else {
+                    isInCart = false;
+                }
+            })
+        }
+
+        if (isInCart) {
+            notification(`${_cloth.name} already in CART!`)
+        } else {
+            // push to cart object
+            cart.push({
+                owner: _cloth.owner,
+                image: _cloth.image,
+                name: _cloth.name,
+                price: _cloth.price,
+                description: _cloth.description,
+                collection: _cloth.collection,
+                sold: _cloth.sold,
+                index: _cloth.index,
+            })
+
+            // get total sum before and after
+            let oldSum = document.getElementById("totalSum").textContent
+            let newSum = parseFloat(oldSum) + parseFloat(_cloth.price.shiftedBy(-ERC20_DECIMALS).toFixed(2))
+            document.getElementById("totalSum").textContent = newSum
+
+            notification(`${_cloth.name} has been added to CART!`)
+
+            // clear out
+            document.getElementById("emptyCart").textContent = ""
+            renderCart();
+            // getting cart total items
+            document.querySelector("#cartTotal").textContent = cartTotal++
+        }
     }
 })
 
@@ -270,11 +304,12 @@ document.querySelector("#clothes").addEventListener("click", (e) => {
 document.querySelector("#buyCart").addEventListener("click", async (e) => {
     if (e.target.className.includes("buy-cart")) {
         let totalSumPrice = document.getElementById("totalSum").textContent
-        totalSumPrice = parseFloat(totalSumPrice)
-        if (totalSumPrice > 0.00) {
+        totalSumPrice = new BigNumber(parseFloat(totalSumPrice)).shiftedBy(ERC20_DECIMALS)
+
+        if (totalSumPrice > 0) {
             notification("⌛ Waiting for payment approval...")
             try {
-                await approve(totalSumPrice)
+                await approve(totalSumPrice.toString())
             } catch (error) {
                 notification(`⚠️ ${error}.`)
             }
@@ -283,10 +318,13 @@ document.querySelector("#buyCart").addEventListener("click", async (e) => {
                 cart.forEach(item => {
                     cartAddress.push(item.owner)
                 })
-                await contract.methods.clearCartAddress()
-                const addFromContract = await contract.methods.addCartAddress(cartAddress)
-                const result = await contract.methods.buyCloth(totalSumPrice)
-                notification(`You successfully bought "${totalSumPrice} cUSD" worth of clothes.`)
+                await contract.methods.clearCartAddress() // clear the cart address in contract
+                await contract.methods.addCartAddress(cartAddress) // add new cart addresses in contract
+                const result = await contract.methods.buyCart(totalSumPrice) // call the buy cart
+
+                notification(`You successfully bought "${totalSumPrice.shiftedBy(-ERC20_DECIMALS).toFixed(2)} cUSD" worth of clothes.`)
+
+                // clear cart and update app
                 document.getElementById("totalSum").textContent = 0
                 document.getElementById("balance").textContent = 0
                 cart = []
