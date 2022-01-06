@@ -19,7 +19,7 @@ contract Clothly {
     address internal cUsdTokenAddress = 0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1;
     address[] public cartAddresses;
     address[] empty;
-
+// structure of clothings
     struct Cloth {
         address payable owner;
         string name;
@@ -32,6 +32,7 @@ contract Clothly {
 
     mapping (uint => Cloth) internal clothes;
 
+// adding a clothing to the block chain
     function writeCloth(
         string memory _name,
         string memory _image,
@@ -51,7 +52,7 @@ contract Clothly {
         );
         clothesLength++;
     }
-
+// getting clothing information from the block chaim
     function readCloth(uint _index) public view returns (
         address payable,
         string memory, 
@@ -71,7 +72,7 @@ contract Clothly {
             clothes[_index].sold
         );
     }
-
+ // buying a clothing
     function buyCloth(uint _index) public payable  {
         require(
           IERC20Token(cUsdTokenAddress).transferFrom(
@@ -83,23 +84,24 @@ contract Clothly {
         );
         clothes[_index].sold++;
     }
-
+// adding adresses to the cart for purchase
     function addCartAddress(address sellerAdd) public returns (address[] memory){
+        require(sellerAdd != msg.sender, " you cant add your own address to the cart");
         cartAddresses.push(sellerAdd);
         return (cartAddresses);
     }
-
+// clearing addresses in the cart
     function clearCartAddress() public returns (uint256){
         cartAddresses = empty;
         return (cartAddresses.length);
     }
-
+// paying for clothing by paying to all the cart addreses
     function buyCart(uint totalSumPrice) public payable {
         for (uint i = 0; i < cartAddresses.length; i++) {
             payable(cartAddresses[i]).transfer(totalSumPrice);
         }
     }
-    
+    // getting the length of all clothings
     function getClothesLength() public view returns (uint) {
         return (clothesLength);
     }
